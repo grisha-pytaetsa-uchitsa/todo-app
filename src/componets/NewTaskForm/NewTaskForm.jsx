@@ -9,6 +9,7 @@ export default class NewTaskForm extends Component {
   }
 
   onLabelChange = (event) => {
+    console.log(event.target.value);
     let newStr;
     if (!event.target.value.trim()) {
       newStr = '';
@@ -33,7 +34,7 @@ export default class NewTaskForm extends Component {
   render() {
     const { label } = this.state;
     return (
-      <form onSubmit={this.onFormSubmit}>
+      <form className="new-todo-form" onSubmit={this.onFormSubmit}>
         <input
           className="new-todo"
           placeholder="What needs to be done?"
@@ -42,6 +43,8 @@ export default class NewTaskForm extends Component {
           value={label}
           required
         />
+        <input className="new-todo-form__timer" placeholder="Min" />
+        <input className="new-todo-form__timer" placeholder="Sec" />
       </form>
     );
   }
