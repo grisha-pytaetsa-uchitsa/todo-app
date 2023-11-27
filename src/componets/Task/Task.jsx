@@ -1,6 +1,22 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-function Task({ label, id, done, editing, onDeleted, onToggleCompleted, onFormSubmit, distanceToNow }) {
+function Task({
+  label,
+  min,
+  sec,
+  id,
+  done,
+  timer,
+  editing,
+  onDeleted,
+  onToggleCompleted,
+  startTimer,
+  onFormSubmit,
+  distanceToNow,
+  stopTimer,
+}) {
   let classNames = '';
 
   if (done) {
@@ -14,7 +30,7 @@ function Task({ label, id, done, editing, onDeleted, onToggleCompleted, onFormSu
   }
 
   return (
-    <li className={classNames} key={id}>
+    <li className={classNames}>
       <div className="view">
         <input
           className="toggle"
@@ -23,16 +39,21 @@ function Task({ label, id, done, editing, onDeleted, onToggleCompleted, onFormSu
           onChange={onToggleCompleted}
           id={id}
         />
-        <label onClick={onToggleCompleted} onKeyDown={onToggleCompleted} htmlFor={id}>
-          <span className="title">fw</span>
-          <span className="description">
-            <button className="icon icon-play" type="button" />
-            <button className="icon icon-pause" type="button" />
-            12:25
+        <div className="label">
+          <span className="title" onClick={onToggleCompleted} onKeyDown={onToggleCompleted}>
+            {label}
           </span>
-          <span className="description">{distanceToNow}</span>
-          <span className="description">{label}</span>
-        </label>
+          <span className="description">
+            <button className="icon icon-play" onClick={!timer ? startTimer : null} type="button" />
+            <button className="icon icon-pause" onClick={timer ? stopTimer : null} type="button" />
+            <span className="timer">
+              {min}:{sec}
+            </span>
+          </span>
+          <span className="description" onClick={onToggleCompleted} onKeyDown={onToggleCompleted}>
+            {distanceToNow}
+          </span>
+        </div>
         <button className="icon icon-edit" type="button" disabled aria-label="Edit task" />
         <button className="icon icon-destroy" type="button" onClick={onDeleted} aria-label="Delete task" />
       </div>
