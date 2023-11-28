@@ -1,7 +1,8 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable no-unused-expressions */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+import { useEffect } from 'react';
+
 function Task({
   label,
   min,
@@ -9,24 +10,33 @@ function Task({
   id,
   done,
   timer,
-  editing,
   onDeleted,
   onToggleCompleted,
-  startTimer,
+  onToggleTimer,
+  onToggleSeconds,
   onFormSubmit,
   distanceToNow,
-  stopTimer,
 }) {
+  useEffect(() => {
+    const interval = setInterval(() => {
+      timer && onToggleSeconds(id);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [id, onToggleSeconds, timer]);
+
+  const handleStart = (idx) => {
+    onToggleTimer(idx);
+  };
+
+  const handleStop = (idx) => {
+    onToggleTimer(idx);
+  };
+
   let classNames = '';
 
   if (done) {
     classNames = '';
     classNames += 'completed';
-  }
-
-  if (editing) {
-    classNames = '';
-    classNames += 'editing';
   }
 
   return (
@@ -44,8 +54,8 @@ function Task({
             {label}
           </span>
           <span className="description">
-            <button className="icon icon-play" onClick={!timer ? startTimer : null} type="button" />
-            <button className="icon icon-pause" onClick={timer ? stopTimer : null} type="button" />
+            <button className="icon icon-play" onClick={!timer ? () => handleStart(id) : null} type="button" />
+            <button className="icon icon-pause" onClick={timer ? () => handleStop(id) : null} type="button" />
             <span className="timer">
               {min}:{sec}
             </span>

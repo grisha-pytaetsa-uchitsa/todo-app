@@ -1,96 +1,103 @@
-import { Component } from 'react';
+import { useState } from 'react';
 
-export default class NewTaskForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      label: '',
-      min: '',
-      sec: '',
-    };
-  }
+export default function NewTaskForm({ onAddItem }) {
+  const [state, setState] = useState({
+    label: '',
+    min: '',
+    sec: '',
+  });
 
-  onLabelChange = (event) => {
-    let newStr;
-    if (!event.target.value.trim()) {
-      newStr = '';
-    } else {
-      newStr = event.target.value;
-    }
-    this.setState({
-      label: newStr,
+  const onLabelChange = (event) => {
+    setState(({ min, sec }) => {
+      let newStr;
+      if (!event.target.value.trim()) {
+        newStr = '';
+      } else {
+        newStr = event.target.value;
+      }
+      return {
+        label: newStr,
+        min,
+        sec,
+      };
     });
   };
 
-  onMinChange = (event) => {
-    let newMin;
-    if (!event.target.value.trim()) {
-      newMin = '';
-    } else {
-      newMin = event.target.value;
-    }
-    this.setState({
-      min: newMin,
+  const onMinChange = (event) => {
+    setState(({ label, sec }) => {
+      let newMin;
+      if (!event.target.value.trim()) {
+        newMin = '';
+      } else {
+        newMin = event.target.value;
+      }
+      return {
+        label,
+        min: newMin,
+        sec,
+      };
     });
   };
 
-  onSecChange = (event) => {
-    let newSec;
-    if (!event.target.value.trim()) {
-      newSec = '';
-    } else {
-      newSec = event.target.value;
-    }
-    this.setState({
-      sec: newSec,
+  const onSecChange = (event) => {
+    setState(({ label, min }) => {
+      let newSec;
+      if (!event.target.value.trim()) {
+        newSec = '';
+      } else {
+        newSec = event.target.value;
+      }
+      return {
+        label,
+        min,
+        sec: newSec,
+      };
     });
   };
 
-  onFormSubmit = (event) => {
-    const { onAddItem } = this.props;
-    const { label, min, sec } = this.state;
+  const onFormSubmit = (event) => {
+    const { label, min, sec } = state;
     event.preventDefault();
     onAddItem(label, min, sec);
-    this.setState({
+    setState({
       label: '',
       min: '',
       sec: '',
     });
   };
 
-  render() {
-    const { label, min, sec } = this.state;
-    return (
-      <form className="new-todo-form" onSubmit={this.onFormSubmit}>
-        <input
-          className="new-todo"
-          placeholder="What needs to be done?"
-          onChange={this.onLabelChange}
-          onSubmit={this.onFormSubmit}
-          type="text"
-          value={label}
-          required
-        />
-        <input
-          className="new-todo-form__timer"
-          placeholder="Min"
-          onChange={this.onMinChange}
-          type="number"
-          value={min}
-          required
-        />
-        <input
-          className="new-todo-form__timer"
-          placeholder="Sec"
-          onChange={this.onSecChange}
-          type="number"
-          value={sec}
-          required
-        />
-        <button className="submitButton" type="submit">
-          nenuzhnaya dlya otobrazheniya knopka, nichego lichnogo
-        </button>
-      </form>
-    );
-  }
+  const { label, min, sec } = state;
+
+  return (
+    <form className="new-todo-form" onSubmit={onFormSubmit}>
+      <input
+        className="new-todo"
+        placeholder="What needs to be done?"
+        onChange={onLabelChange}
+        onSubmit={onFormSubmit}
+        type="text"
+        value={label}
+        required
+      />
+      <input
+        className="new-todo-form__timer"
+        placeholder="Min"
+        onChange={onMinChange}
+        type="number"
+        value={min}
+        required
+      />
+      <input
+        className="new-todo-form__timer"
+        placeholder="Sec"
+        onChange={onSecChange}
+        type="number"
+        value={sec}
+        required
+      />
+      <button className="submitButton" type="submit">
+        nenuzhnaya dlya otobrazheniya knopka, nichego lichnogo
+      </button>
+    </form>
+  );
 }

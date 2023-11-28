@@ -2,7 +2,7 @@ import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 
 import Task from '../Task/Task';
 
-function TaskList({ elements, onDeleted, onToggleCompleted, startTimer, stopTimer }) {
+function TaskList({ elements, onDeleted, onToggleCompleted, onToggleTimer, onToggleSeconds }) {
   return (
     <ul className="todo-list">
       {elements.map((el) => {
@@ -16,15 +16,15 @@ function TaskList({ elements, onDeleted, onToggleCompleted, startTimer, stopTime
               label={el.label}
               min={el.min}
               sec={el.sec}
+              id={el.id}
               key={el.id}
               done={el.done}
               timer={el.timer}
-              editing={el.editing}
               onDeleted={() => onDeleted(el.id)}
               onToggleCompleted={() => onToggleCompleted(el.id)}
-              startTimer={() => startTimer(el.id)}
+              onToggleTimer={onToggleTimer}
+              onToggleSeconds={onToggleSeconds}
               distanceToNow={distanceToNow}
-              stopTimer={() => stopTimer(el.id)}
             />
           )
         );
