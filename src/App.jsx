@@ -23,6 +23,10 @@ export default class App extends React.Component {
     };
   }
 
+  componentWillUnmount() {
+    clearInterval(this.timerId);
+  }
+
   addItem = (text, min, sec) => {
     const newText = text.trim();
     const newItem = this.createItem(newText, min, sec);
@@ -128,19 +132,6 @@ export default class App extends React.Component {
     });
   };
 
-  // onToggleEditing = (id) => {
-  //   this.setState(({ elements }) => {
-  //     const idx = elements.findIndex((el) => el.id === id);
-  //     const oldItem = elements[idx];
-  //     const newItem = { ...oldItem, editing: !oldItem.editing };
-  //     const newArray = [...elements.slice(0, idx), newItem, ...elements.slice(idx + 1)];
-  //     return {
-  //       elements: newArray,
-  //       currentItems: newArray,
-  //     };
-  //   });
-  // };
-
   clearCompletedItems = () => {
     this.setState(({ elements }) => {
       const newArr = elements.filter((el) => !el.done);
@@ -217,7 +208,6 @@ export default class App extends React.Component {
       sec,
       done: false,
       timer: false,
-      // editing: false,
       id: (this.itemId += 1),
     };
     return newItem;
@@ -295,7 +285,6 @@ export default class App extends React.Component {
               onToggleCompleted={this.onToggleCompleted}
               startTimer={this.startTimer}
               stopTimer={this.stopTimer}
-              // onToggleEditing={this.onToggleEditing}
             />
 
             <Footer
