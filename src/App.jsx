@@ -23,10 +23,6 @@ export default class App extends React.Component {
     };
   }
 
-  componentWillUnmount() {
-    clearInterval(this.timerId);
-  }
-
   addItem = (text, min, sec) => {
     const newText = text.trim();
     const newItem = this.createItem(newText, min, sec);
@@ -41,6 +37,9 @@ export default class App extends React.Component {
   };
 
   deleteItem = (id) => {
+    if (this.timerId) {
+      clearInterval(this.timerId);
+    }
     this.setState(({ elements, filter }) => {
       const idx = elements.findIndex((el) => el.id === id);
       const newArray = [...elements.slice(0, idx), ...elements.slice(idx + 1)];
